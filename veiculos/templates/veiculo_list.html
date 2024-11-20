@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}
+SMI - Veículos
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h3 class="display-6">Lista de Veículos</h3>
+
+    <!-- Filtro de Pesquisa e Botão de Cadastro -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <!-- Formulário de Pesquisa -->
+            <form method="get" action="{% url 'veiculo_list' %}">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="nome" placeholder="Procurar Veículos" value="{{ request.GET.nome }}">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-search"></i> Buscar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-6 text-end">
+            <!-- Botão de Cadastro -->
+            <a href="{% url 'veiculo_create' %}" class="btn btn-success">
+                <i class="bi bi-plus"></i> Cadastrar Veículo
+            </a>
+        </div>
+    </div>
+
+    <!-- Tabela de Veículos -->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th class="text-center">Ações</th>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Estado</th>
+                    <th>Cidade</th>
+                    <th>Tipo</th>
+                    <th>Status</th>
+                    <th>Última Alteração</th>
+                    <th>Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for veiculo in veiculos %}
+                <tr>
+                    <!-- Ações -->
+                    <td class="text-center">
+                        <a href="{% url 'veiculo_detail' veiculo.id %}" class="btn btn-info btn-sm" title="Visualizar">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <a href="{% url 'veiculo_update' veiculo.id %}" class="btn btn-warning btn-sm" title="Editar">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a href="{% url 'veiculo_delete' veiculo.id %}" class="btn btn-danger btn-sm" title="Excluir">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                    <td>{{ veiculo.id }}</td>
+                    <td>{{ veiculo.nome }}</td>
+                    <td>{{ veiculo.UF }}</td>
+                    <td>{{ veiculo.cidade }}</td>
+                    <td>{{ veiculo.tipodeveiculo }}</td>
+                    <td>{{ veiculo.status }}</td>
+                    <td>{{ veiculo.updated_at|date:"d/m/Y H:i" }}</td>
+                    <td>
+                        {% if veiculo.endereco_do_site %}
+                        <a href="{{ veiculo.endereco_do_site }}" target="_blank" class="text-decoration-none">
+                            Visitar Site
+                        </a>
+                        {% else %}
+                        Não informado
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Paginação -->
+    {% include 'components/_pagination.html' %}
+</div>
+{% endblock %}

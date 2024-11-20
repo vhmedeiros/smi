@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h3 class="display-6 text-danger">Deletar Cliente</h3>
+
+    <div class="card shadow-sm border-danger">
+        <div class="card-body">
+            <!-- Mensagem de confirmação -->
+            <p class="card-text">
+                Tem certeza de que deseja deletar o cliente <strong>{{ object.razao_social }}</strong>?
+            </p>
+            <p class="text-muted">
+                Esta ação é irreversível e todos os dados associados serão perdidos.
+            </p>
+
+            <!-- Formulário para confirmar exclusão -->
+            <form method="post" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Deletar
+                </button>
+            </form>
+            
+            <!-- Botão para cancelar -->
+            <a href="{% url 'cliente_list' %}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Cancelar
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

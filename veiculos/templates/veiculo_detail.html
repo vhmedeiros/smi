@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container mt-4">
+        <h3 class="display-6">Detalhes do Veículo</h3>
+    
+        <div class="card">
+            <div class="card-body">
+                <!-- Informações principais do veículo -->
+                <h5 class="card-title">{{ object.nome }}</h5>
+                <p class="card-text"><strong>Tipo de Veículo:</strong> {{ object.tipodeveiculo }}</p>
+                <p class="card-text"><strong>Periodicidade:</strong> {{ object.periodicidade }}</p>
+                <p class="card-text"><strong>Status:</strong> {{ object.status }}</p>
+                <p class="card-text"><strong>Grande Imprensa:</strong> {{ object.grande_imprensa|yesno:"Sim,Não" }}</p>
+
+                <!-- Localização -->
+                <hr>
+                <h6>Localização</h6>
+                <p class="card-text"><strong>País:</strong> {{ object.pais }}</p>
+                <p class="card-text"><strong>UF:</strong> {{ object.UF }}</p>
+                <p class="card-text"><strong>Cidade:</strong> {{ object.cidade|default:"Não informado" }}</p>
+
+                <!-- Informações adicionais -->
+                <hr>
+                <h6>Informações Adicionais</h6>
+                <p class="card-text"><strong>Prioritário:</strong> {{ object.prioritario|yesno:"Sim,Não" }}</p>
+                <p class="card-text"><strong>Valor Publicitário Padrão:</strong> {{ object.valor_publicitario_padrao|floatformat:2 }}</p>
+                <p class="card-text"><strong>Altura (cm):</strong> {{ object.altura_cm|default:"Não informado" }}</p>
+                <p class="card-text"><strong>Largura (cm):</strong> {{ object.largura_cm|default:"Não informado" }}</p>
+                <p class="card-text"><strong>Endereço do Site:</strong> 
+                    {% if object.endereco_do_site %}
+                        <a href="{{ object.endereco_do_site }}" target="_blank">{{ object.endereco_do_site }}</a>
+                    {% else %}
+                        Não informado
+                    {% endif %}
+                </p>
+                <p class="card-text"><strong>Identificador URL:</strong> {{ object.identificador_url|default:"Não informado" }}</p>
+                <p class="card-text"><strong>Endereço do Flip:</strong> {{ object.endereco_do_flip|default:"Não informado" }}</p>
+                <p class="card-text"><strong>Número Mínimo de Notícias:</strong> {{ object.numero_minimo_de_noticias|default:"Não informado" }}</p>
+                <p class="card-text"><strong>Período Máximo sem Notícia (dias):</strong> {{ object.periodo_maximo_sem_noticia|default:"Não informado" }}</p>
+                <p class="card-text"><strong>URL da Stream:</strong> 
+                    {% if object.url_da_stream %}
+                        <a href="{{ object.url_da_stream }}" target="_blank">{{ object.url_da_stream }}</a>
+                    {% else %}
+                        Não informado
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        <a href="{% url 'veiculo_list' %}" class="btn btn-secondary mt-3">Voltar para Lista de Veículos</a>
+    </div>
+
+{% endblock %}
