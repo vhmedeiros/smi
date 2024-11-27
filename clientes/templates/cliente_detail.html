@@ -2,36 +2,51 @@
 
 {% block content %}
 
-<div class="container mt-4">
-    <h3 class="display-6">Detalhes do Cliente</h3>
+    <div class="container mt-4">
+        <h3 class="display-6">Detalhes do Cliente</h3>
+    
+        <div class="card">
+            <div class="card-body">
+                <!-- Informações principais do cliente -->
+                <h5 class="card-title">{{ object.razao_social }}</h5>
+                <p class="card-text"><strong>CNPJ/CPF:</strong> 
+                    {% if object.cnpj_cpf|length == 14 %}
+                        {{ object.cnpj_cpf|slice:":2" }}.{{ object.cnpj_cpf|slice:"2:5" }}.{{ object.cnpj_cpf|slice:"5:8" }}/{{ object.cnpj_cpf|slice:"8:12" }}-{{ object.cnpj_cpf|slice:"12:" }}
+                    {% elif object.cnpj_cpf|length == 11 %}
+                        {{ object.cnpj_cpf|slice:":3" }}.{{ object.cnpj_cpf|slice:"3:6" }}.{{ object.cnpj_cpf|slice:"6:9" }}-{{ object.cnpj_cpf|slice:"9:" }}
+                    {% else %}
+                        {{ object.cnpj_cpf }}
+                    {% endif %}
+                </p>
+                <p class="card-text"><strong>Inscrição Estadual:</strong> {{ object.inscricao_estadual|default:"Não informado" }}</p>
+                <p class="card-text"><strong>Inscrição Municipal:</strong> {{ object.inscricao_municipal|default:"Não informado" }}</p>
+                <p class="card-text"><strong>Contato Principal:</strong> 
+                    ({{ object.contato_1|slice:":2" }}) {{ object.contato_1|slice:"2:7" }}-{{ object.contato_1|slice:"7:" }}
+                </p>
+                <p class="card-text"><strong>Contato Secundário:</strong> 
+                    {% if object.contato_2 %}
+                        ({{ object.contato_2|slice:":2" }}) {{ object.contato_2|slice:"2:7" }}-{{ object.contato_2|slice:"7:" }}
+                    {% else %}
+                        Não informado
+                    {% endif %}
+                </p>
+                <p class="card-text"><strong>E-mail:</strong> <a href="mailto:{{ object.email }}">{{ object.email }}</a></p>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <!-- Informações principais do cliente -->
-            <h5 class="card-title text-primary">{{ object.razao_social }}</h5>
-            <p class="card-text"><strong>CNPJ/CPF:</strong> {{ object.cnpj_cpf }}</p>
-            <p class="card-text"><strong>Inscrição Estadual:</strong> {{ object.inscricao_estadual|default:"Não informado" }}</p>
-            <p class="card-text"><strong>Inscrição Municipal:</strong> {{ object.inscricao_municipal|default:"Não informado" }}</p>
-            <p class="card-text"><strong>Contato Principal:</strong> {{ object.contato_1 }}</p>
-            <p class="card-text"><strong>Contato Secundário:</strong> {{ object.contato_2|default:"Não informado" }}</p>
-            <p class="card-text"><strong>E-mail:</strong> <a href="mailto:{{ object.email }}">{{ object.email }}</a></p>
-
-            <!-- Informações do endereço -->
-            <hr>
-            <h6 class="text-secondary">Endereço</h6>
-            <p class="card-text"><strong>Logradouro:</strong> {{ object.logradouro }}</p>
-            <p class="card-text"><strong>Número:</strong> {{ object.numero }}</p>
-            <p class="card-text"><strong>Complemento:</strong> {{ object.complemento|default:"Não informado" }}</p>
-            <p class="card-text"><strong>Bairro:</strong> {{ object.bairro }}</p>
-            <p class="card-text"><strong>CEP:</strong> {{ object.cep }}</p>
-            <p class="card-text"><strong>Cidade:</strong> {{ object.cidade|default:"Não informado" }}</p>
-            <p class="card-text"><strong>UF:</strong> {{ object.UF }}</p>
-            <p class="card-text"><strong>País:</strong> {{ object.pais }}</p>
+                <hr>
+                <h6>Endereço</h6>
+                <p class="card-text"><strong>Logradouro:</strong> {{ object.logradouro }}</p>
+                <p class="card-text"><strong>Número:</strong> {{ object.numero }}</p>
+                <p class="card-text"><strong>Complemento:</strong> {{ object.complemento|default:"Não informado" }}</p>
+                <p class="card-text"><strong>Bairro:</strong> {{ object.bairro }}</p>
+                <p class="card-text"><strong>CEP:</strong> 
+                    {{ object.cep|slice:":5" }}-{{ object.cep|slice:"5:" }}
+                </p>
+                <p class="card-text"><strong>Cidade:</strong> {{ object.cidade|default:"Não informado" }}</p>
+                <p class="card-text"><strong>UF:</strong> {{ object.UF }}</p>
+                <p class="card-text"><strong>País:</strong> {{ object.pais }}</p>
+            </div>
         </div>
+        <a href="{% url 'cliente_list' %}" class="btn btn-secondary mt-3">Voltar para Lista de Clientes</a>
     </div>
-    <a href="{% url 'cliente_list' %}" class="btn btn-secondary mt-3">
-        <i class="bi bi-arrow-left"></i> Voltar para Lista de Clientes
-    </a>
-</div>
 
 {% endblock %}

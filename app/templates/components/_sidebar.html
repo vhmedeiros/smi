@@ -20,17 +20,17 @@
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link px-0 align-middle">
+            <a href="{% url 'noticia_list' %}" class="nav-link px-0 align-middle">
               <i class="bi bi-newspaper fs-4"></i>
               <span class="ms-1">Notícias</span>
             </a>
           </li>
-          <li>
+          <!-- <li>
             <a href="#" class="nav-link px-0 align-middle">
               <i class="bi bi-journal-bookmark fs-4"></i>
               <span class="ms-1">Assinaturas</span>
             </a>
-          </li>
+          </li> -->
           <li>
             <a href="{% url 'cliente_list' %}" class="nav-link px-0 align-middle">
               <i class="bi bi-person fs-4"></i>
@@ -38,7 +38,7 @@
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link px-0 align-middle">
+            <a href="{% url 'empresa_list' %}" class="nav-link px-0 align-middle">
               <i class="bi bi-building fs-4"></i>
               <span class="ms-1">Empresas</span>
             </a>

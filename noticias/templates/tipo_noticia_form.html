@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Gerenciar Tipos de Notícias{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h3 class="display-6">Gerenciar Tipos de Notícias</h3>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form method="post" class="needs-validation" novalidate>
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_tipo" class="form-label">Tipo de Notícia</label>
+                    {{ form.tipo }}
+                </div>
+
+                <!-- Botões de ação -->
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i> Salvar Tipo de Notícia
+                    </button>
+                    <a href="{% url 'noticia_create' %}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

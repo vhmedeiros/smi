@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h3 class="display-6">Detalhes da Empresa</h3>
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+            <!-- Informações Principais -->
+            <h5 class="card-title text-uppercase">{{ object.nome }}</h5>
+            <p class="card-text"><strong>Sigla:</strong> {{ object.sigla|default:"Não informado" }}</p>
+            <p class="card-text"><strong>Nome Fantasia:</strong> {{ object.nome_fantasia|default:"Não informado" }}</p>
+            
+            <!-- Formatação do CNPJ no próprio HTML -->
+            <p class="card-text">
+                <strong>CNPJ:</strong>
+                {% if object.cnpj and object.cnpj|length == 14 %}
+                    {{ object.cnpj|slice:":2" }}.{{ object.cnpj|slice:"2:5" }}.{{ object.cnpj|slice:"5:8" }}/{{ object.cnpj|slice:"8:12" }}-{{ object.cnpj|slice:"12:14" }}
+                {% else %}
+                    Não informado
+                {% endif %}
+            </p>
+            
+            <p class="card-text">
+                <strong>Domínio:</strong>
+                <a href="http://{{ object.dominio }}" target="_blank">{{ object.dominio }}</a>
+            </p>
+            
+            <!-- Datas -->
+            <hr>
+            <h6>Informações de Registro</h6>
+            <p class="card-text">
+                <strong>Data de Criação:</strong> {{ object.created_at|date:"d/m/Y H:i" }}
+            </p>
+            <p class="card-text">
+                <strong>Última Atualização:</strong> {{ object.updated_at|date:"d/m/Y H:i" }}
+            </p>
+        </div>
+    </div>
+
+    <a href="{% url 'empresa_list' %}" class="btn btn-secondary mt-3">
+        <i class="bi bi-arrow-left"></i> Voltar para Lista de Empresas
+    </a>
+</div>
+
+{% endblock %}

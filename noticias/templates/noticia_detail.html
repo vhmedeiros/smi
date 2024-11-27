@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h3 class="display-6">Detalhes da Notícia</h3>
+
+    <div class="card">
+        <div class="card-body">
+            <!-- Informações principais da notícia -->
+            <h5 class="card-title">{{ object.titulo }}</h5>
+            <p class="card-text"><strong>Veículo:</strong> {{ object.veiculo }}</p>
+            <p class="card-text"><strong>Editoria:</strong> {{ object.editoria }}</p>
+            <p class="card-text"><strong>Tipo de Notícia:</strong> {{ object.tipo_noticia }}</p>
+            <p class="card-text"><strong>Autor:</strong> {{ object.autor|default:"Não informado" }}</p>
+
+            <!-- Data e hora -->
+            <hr>
+            <h6>Datas</h6>
+            <p class="card-text"><strong>Data de Publicação:</strong> {{ object.data_publicacao|date:"d/m/Y" }}</p>
+            <p class="card-text"><strong>Hora de Publicação:</strong> {{ object.hora|default:"Não informado" }}</p>
+            <p class="card-text"><strong>Data de Cadastro:</strong> {{ object.data_cadastro|date:"d/m/Y H:i" }}</p>
+
+            <!-- Link da notícia -->
+            <hr>
+            <h6>Link</h6>
+            <p class="card-text">
+                <strong>Link da Notícia:</strong>
+                {% if object.link_noticia %}
+                    <a href="{{ object.link_noticia }}" target="_blank">{{ object.link_noticia }}</a>
+                {% else %}
+                    Não informado
+                {% endif %}
+            </p>
+
+            <!-- Resumo e conteúdo -->
+            <hr>
+            <h6>Conteúdo</h6>
+            <p class="card-text"><strong>Subtítulo:</strong> {{ object.subtitulo|default:"Não informado" }}</p>
+            <p class="card-text"><strong>Resumo:</strong> {{ object.resumo|default:"Não informado" }}</p>
+            <p class="card-text"><strong>Conteúdo:</strong></p>
+            <div class="p-3 border rounded">
+                {{ object.conteudo|linebreaks|default:"Não informado" }}
+            </div>
+
+            <!-- Anexos -->
+            <hr>
+            <h6>Anexos</h6>
+            {% if object.anexos.exists %}
+                <ul>
+                    {% for anexo in object.anexos.all %}
+                        <li>
+                            <strong>{{ anexo.tipo }}:</strong>
+                            {% if anexo.arquivo.url %}
+                                <a href="{{ anexo.arquivo.url }}" target="_blank">{{ anexo.descricao|default:"Sem descrição" }}</a>
+                            {% else %}
+                                {{ anexo.descricao|default:"Sem descrição" }}
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">Sem anexos disponíveis.</p>
+            {% endif %}
+        </div>
+    </div>
+    <a href="{% url 'noticia_list' %}" class="btn btn-secondary mt-3">
+        <i class="bi bi-arrow-left"></i> Voltar para Lista de Notícias
+    </a>
+</div>
+{% endblock %}

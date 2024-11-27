@@ -21,7 +21,7 @@ class VeiculoAdmin(admin.ModelAdmin):
         'status',
         'grande_imprensa',
         'pais',
-        'UF',
+        'uf',
         'cidade',
         'prioritario',
         'valor_publicitario_padrao',

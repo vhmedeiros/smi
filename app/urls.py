@@ -8,6 +8,8 @@ urlpatterns = [
 
     path('', include('veiculos.urls')),
     path('', include('clientes.urls')),
+    path('', include('empresas.urls')),
+    path('', include('noticias.urls')),
 ]
 
 # Adiciona suporte para servir arquivos de mídia no modo DEBUG

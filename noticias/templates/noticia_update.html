@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h3 class="display-6">Editar Notícia</h3>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <!-- Formulário de Edição -->
+            <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                {% csrf_token %}
+
+                <!-- Campos do formulário -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form.veiculo.label_tag }}
+                        {{ form.veiculo }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.editoria.label_tag }}
+                        <div class="d-flex">
+                            {{ form.editoria }}
+                            <button type="button" class="btn btn-outline-primary ms-2" data-bs-toggle="modal" data-bs-target="#editoriaModal">
+                                <i class="bi bi-gear"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.tipo_noticia.label_tag }}
+                        <div class="d-flex">
+                            {{ form.tipo_noticia }}
+                            <button type="button" class="btn btn-outline-primary ms-2" data-bs-toggle="modal" data-bs-target="#tipoNoticiaModal">
+                                <i class="bi bi-gear"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.autor.label_tag }}
+                        {{ form.autor }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.data_publicacao.label_tag }}
+                        {{ form.data_publicacao }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.hora.label_tag }}
+                        {{ form.hora }}
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        {{ form.link_noticia.label_tag }}
+                        {{ form.link_noticia }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.titulo.label_tag }}
+                        {{ form.titulo }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.subtitulo.label_tag }}
+                        {{ form.subtitulo }}
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        {{ form.resumo.label_tag }}
+                        {{ form.resumo }}
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        {{ form.conteudo.label_tag }}
+                        <textarea id="{{ form.conteudo.id_for_label }}" name="{{ form.conteudo.html_name }}" class="form-control" rows="15">{{ form.conteudo.value }}</textarea>
+                    </div>
+                </div>
+
+                <!-- Botões -->
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save"></i> Salvar Notícia
+                </button>
+                <a href="{% url 'noticia_list' %}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Cancelar
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -56,7 +56,7 @@ class Veiculo(models.Model):
     )
     grande_imprensa = models.BooleanField(default=False)
     pais = models.CharField(max_length=100, default='Brasil')
-    UF = models.CharField(max_length=2)  # Ex.: 'SP'
+    uf = models.CharField(max_length=2)  # Ex.: 'SP'
     cidade = models.CharField(max_length=100, blank=True, null=True)
     prioritario = models.BooleanField(default=False)
     valor_publicitario_padrao = models.DecimalField(

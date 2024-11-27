@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Gerenciar Editorias{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h3 class="display-6">Gerenciar Editorias</h3>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form method="post" class="needs-validation" novalidate>
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_veiculo" class="form-label">Veículo</label>
+                    {{ form.veiculo }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_name" class="form-label">Nome da Editoria</label>
+                    {{ form.name }}
+                </div>
+
+                <!-- Botões de ação -->
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i> Salvar Editoria
+                    </button>
+                    <a href="{% url 'noticia_create' %}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

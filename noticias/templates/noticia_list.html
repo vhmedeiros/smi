@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% block title %}
+SMI - Notícias
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h3 class="display-6">Lista de Notícias</h3>
+
+    <form method="get" action="{% url 'noticia_list' %}">
+        <div class="row mb-3">
+            <!-- Campo de busca por título -->
+            <div class="col-md-4">
+                <label for="titulo" class="form-label">Título da Notícia</label>
+                <input type="text" id="titulo" class="form-control" name="titulo" placeholder="Título da Notícia" value="{{ request.GET.titulo }}">
+            </div>
+            <!-- Campo de busca por conteúdo -->
+            <div class="col-md-4">
+                <label for="conteudo" class="form-label">Conteúdo da Notícia</label>
+                <input type="text" id="conteudo" class="form-control" name="conteudo" placeholder="Conteúdo da Notícia" value="{{ request.GET.conteudo }}">
+            </div>
+            <!-- Botão de busca e cadastro -->
+            <div class="col-md-4 text-end">
+                <label class="form-label d-block">&nbsp;</label>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search"></i> Buscar
+                </button>
+                <a href="{% url 'noticia_create' %}" class="btn btn-success ms-2">
+                    <i class="bi bi-plus"></i> Cadastrar Notícia
+                </a>
+            </div>
+        </div>
+    
+        <div class="row mb-3">
+            <!-- Filtro por veículo -->
+            <div class="col-md-4">
+                <label for="veiculo" class="form-label">Veículo</label>
+                <select id="veiculo" class="form-select" name="veiculo">
+                    <option value="" {% if not request.GET.veiculo %} selected {% endif %}>Todos os Veículos</option>
+                    {% for veiculo in veiculos %}
+                    <option value="{{ veiculo.id }}" {% if request.GET.veiculo == veiculo.id|stringformat:"s" %} selected {% endif %}>{{ veiculo.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <!-- Filtro por UF -->
+            <div class="col-md-4">
+                <label for="uf-filter" class="form-label">UF</label>
+                <select id="uf-filter" class="form-select" name="uf">
+                    <option value="" {% if not request.GET.uf %} selected {% endif %}>Selecione a UF</option>
+                    {% for uf in ufs %}
+                    <option value="{{ uf }}" {% if request.GET.uf == uf|stringformat:"s" %} selected {% endif %}>{{ uf }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <!-- Filtro por cidade -->
+            <div class="col-md-4">
+                <label for="cidade-filter" class="form-label">Cidade</label>
+                <select id="cidade-filter" class="form-select" name="cidade" {% if not request.GET.uf %} disabled {% endif %}>
+                    <option value="" {% if not request.GET.cidade %} selected {% endif %}>Selecione a Cidade</option>
+                    {% for cidade in cidades %}
+                    <option value="{{ cidade.id }}" {% if request.GET.cidade == cidade.id|stringformat:"s" %} selected {% endif %}>{{ cidade.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    
+        <div class="row mb-3">
+            <!-- Filtros por data e hora -->
+            <div class="col-md-3">
+                <label for="data-inicio" class="form-label">Data de Início</label>
+                <input type="date" id="data-inicio" class="form-control" name="data_inicio" value="{{ request.GET.data_inicio|default:today|date:'Y-m-d' }}">
+            </div>
+            <div class="col-md-2">
+                <label for="hora-inicio" class="form-label">Hora de Início</label>
+                <input type="time" id="hora-inicio" class="form-control" name="hora_inicio" value="{{ request.GET.hora_inicio|default:'00:00' }}">
+            </div>
+            <div class="col-md-3">
+                <label for="data-fim" class="form-label">Data de Fim</label>
+                <input type="date" id="data-fim" class="form-control" name="data_fim" value="{{ request.GET.data_fim|default:today|date:'Y-m-d' }}">
+            </div>
+            <div class="col-md-2">
+                <label for="hora-fim" class="form-label">Hora de Fim</label>
+                <input type="time" id="hora-fim" class="form-control" name="hora_fim" value="{{ request.GET.hora_fim|default:'23:59' }}">
+            </div>
+        </div>
+    
+        <div class="row mb-3">
+            <!-- Escolha entre data de cadastro ou publicação -->
+            <div class="col-md-6">
+                <label for="data-tipo" class="form-label">Tipo de Data</label>
+                <select id="data-tipo" class="form-select" name="data_tipo">
+                    <option value="cadastro" {% if request.GET.data_tipo == "cadastro" %} selected {% endif %}>Data de Cadastro</option>
+                    <option value="publicacao" {% if request.GET.data_tipo == "publicacao" %} selected {% endif %}>Data de Publicação</option>
+                </select>
+            </div>
+        </div>
+    </form>
+    
+
+    <!-- Tabela de Notícias -->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Ações</th>
+                    <th>Título</th>
+                    <th>Veículo</th>
+                    <th>Data de Publicação</th>
+                    <th>Data de Cadastro</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for noticia in noticias %}
+                <tr>
+                    <td>
+                        <a href="{% url 'noticia_detail' noticia.id %}" class="btn btn-info btn-sm">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <a href="{% url 'noticia_update' noticia.id %}" class="btn btn-warning btn-sm">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                    </td>
+                    <td>{{ noticia.titulo }}</td>
+                    <td>{{ noticia.veiculo.nome }}</td>
+                    <td>{{ noticia.data_publicacao|date:"d/m/Y H:i" }}</td>
+                    <td>{{ noticia.data_cadastro|date:"d/m/Y H:i" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Paginação -->
+    {% include 'components/_pagination.html' %}
+</div>
+
+<!-- JavaScript para habilitar o filtro de cidade baseado no UF -->
+<script>
+    document.getElementById('uf-filter').addEventListener('change', function () {
+        const cidadeFilter = document.getElementById('cidade-filter');
+        if (this.value) {
+            cidadeFilter.removeAttribute('disabled');
+        } else {
+            cidadeFilter.setAttribute('disabled', 'true');
+        }
+    });
+</script>
+{% endblock %}

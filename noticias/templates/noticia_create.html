@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block title %}Cadastrar Notícia{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h3 class="display-6">Cadastrar Notícia</h3>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="veiculo" class="form-label">Veículo</label>
+                {{ form.veiculo }}
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="editoria" class="form-label">Editoria</label>
+                <div class="input-group">
+                    {{ form.editoria }}
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editoriaModal">
+                        <i class="bi bi-gear"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="tipo_noticia" class="form-label">Tipo de Notícia</label>
+                <div class="input-group">
+                    {{ form.tipo_noticia }}
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#tipoNoticiaModal">
+                        <i class="bi bi-gear"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="autor" class="form-label">Autor</label>
+                {{ form.autor }}
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="data_publicacao" class="form-label">Data de Publicação</label>
+                {{ form.data_publicacao }}
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="hora" class="form-label">Hora</label>
+                {{ form.hora }}
+            </div>
+            <div class="col-md-12 mb-3">
+                <label for="link_noticia" class="form-label">Link da Notícia</label>
+                {{ form.link_noticia }}
+            </div>
+            <div class="col-md-12 mb-3">
+                <label for="titulo" class="form-label">Título</label>
+                {{ form.titulo }}
+            </div>
+            <div class="col-md-12 mb-3">
+                <label for="subtitulo" class="form-label">Subtítulo</label>
+                {{ form.subtitulo }}
+            </div>
+            <div class="col-md-12 mb-3">
+                <label for="resumo" class="form-label">Resumo</label>
+                {{ form.resumo }}
+            </div>
+            <div class="col-md-12 mb-3">
+                <label for="conteudo" class="form-label">Conteúdo</label>
+                <textarea id="{{ form.conteudo.id_for_label }}" name="{{ form.conteudo.html_name }}" class="form-control" rows="15">{{ form.conteudo.value }}</textarea>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-save"></i> Salvar
+            </button>
+            <a href="{% url 'noticia_list' %}" class="btn btn-secondary ms-2">
+                <i class="bi bi-arrow-left"></i> Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+
+<!-- Modal para gerenciar editorias -->
+<div class="modal fade" id="editoriaModal" tabindex="-1" aria-labelledby="editoriaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editoriaModalLabel">Gerenciar Editorias</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'editoria_create' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="editoriaName" class="form-label">Nome da Editoria</label>
+                        <input type="text" id="editoriaName" name="name" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                </form>
+                <hr>
+                <h6>Editorias Cadastradas</h6>
+                <ul class="list-group">
+                    {% for editoria in editorias %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ editoria.name }}
+                            <form method="post" action="{% url 'editoria_delete' editoria.id %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para gerenciar tipos de notícia -->
+<div class="modal fade" id="tipoNoticiaModal" tabindex="-1" aria-labelledby="tipoNoticiaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tipoNoticiaModalLabel">Gerenciar Tipos de Notícia</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'tipo_noticia_create' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="tipoNoticiaName" class="form-label">Tipo de Notícia</label>
+                        <input type="text" id="tipoNoticiaName" name="tipo" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                </form>
+                <hr>
+                <h6>Tipos de Notícia Cadastrados</h6>
+                <ul class="list-group">
+                    {% for tipo in tipos %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ tipo.tipo }}
+                            <form method="post" action="{% url 'tipo_noticia_delete' tipo.id %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
